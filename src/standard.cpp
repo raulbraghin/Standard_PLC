@@ -1,129 +1,58 @@
 #include <Arduino.h>
 #include <standard.h>
 
-bool TON::ton(bool IN, unsigned long PT, String unity)
+/******************************************************************************
+IN          = when true, start time
+PT          = Preset Time in milliseconds
+CV          = Current Value of time since IN=true
+Interval    = Comparative Value since IN=true
+
+if IN=true then the time start, when CV=PT then return is true
+*/
+bool standard::ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval)
 {
 
-    if (unity == "ms") // millisegundos
-    {
-
-        static bool Start;
-        static unsigned long TonMillimsAnt = 0;
+         static bool Start;
+        CV = millis() - Interval;
 
         if (!IN)
         {
-            Start = false;
-        }
-
-        if (IN && !Start)
-        {
-            TonMillimsAnt = millis();
-            Start = true;
-        }
-
-        if (Start && (millis() - TonMillimsAnt) >= PT)
-        {
-            // Serial.println("return true");
-            return true;
-        }
-        else
-        {
-            // Serial.println("return false");
             return false;
         }
-    }
-
-    if (unity == "s") // segundos
-    {
-        static bool Start;
-        static int TonMillisAnt = 0;
-
-        if (!IN)
-        {
-            Start = false;
-        }
 
         if (IN && !Start)
         {
-            TonMillisAnt = millis() / 1000;
+            Interval = millis();
             Start = true;
         }
 
-        if (Start && ((millis() / 1000) - TonMillisAnt) >= PT)
+        if (IN && (millis() - Interval) >= PT)
         {
-
+            Interval = millis();
+            Start = false;
             return true;
         }
         else
         {
             return false;
         }
-    }
-
-    if (unity == "m") // minutos
-    {
-        static bool Start;
-        static int TonMillimAnt = 0;
-
-        if (!IN)
-        {
-            Start = false;
-        }
-
-        if (IN && !Start)
-        {
-            TonMillimAnt = millis() / 60000;
-            Start = true;
-        }
-
-        if (Start && ((millis() / 60000) - TonMillimAnt) >= PT)
-        {
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    if (unity == "h")
-    {
-        static bool Start;
-        static int TonMillihAnt = 0;
-
-        if (!IN)
-        {
-            Start = false;
-        }
-
-        if (IN && !Start)
-        {
-            TonMillihAnt = millis() / 36000000;
-            Start = true;
-        }
-
-        if (Start && ((millis() / 36000000) - TonMillihAnt) >= PT)
-        {
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     return false;
 } // FUNÇÃO TON
 
-bool TOF::tof(bool IN, unsigned long PT, String unity)
+/******************************************************************************
+IN          = when false, start time
+PT          = Preset Time in milliseconds
+CV          = Current Value of time since IN=true
+Interval    = Comparative Value since IN=true
+
+if IN=true then the time start, when CV=PT then return is true
+*/
+bool standard::tof(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval)
 {
 
-    if (unity == "ms") // millisegundos
-    {
         static bool Start;
-        static unsigned long TofMillimsAnt = 0;
+        CV = millis() - Interval;
 
         if (IN)
         {
@@ -134,104 +63,27 @@ bool TOF::tof(bool IN, unsigned long PT, String unity)
         if (!IN && !Start)
         {
             Start = true;
-            TofMillimsAnt = millis();
+            Interval = millis();
         }
 
-        if (Start && (millis() - TofMillimsAnt) >= PT)
+        if (!IN && (millis() - Interval) >= PT)
         {
+            Interval = millis();
             return false;
         }
         else
         {
             return true;
         }
-    }
-
-    if (unity == "s") // Segundos
-    {
-        static bool Start;
-        static int TofMillisAnt = 0;
-
-        if (IN)
-        {
-            Start = false;
-            return true;
-        }
-
-        if (!IN && !Start)
-        {
-            Start = true;
-            TofMillisAnt = millis() / 1000;
-        }
-
-        if (Start && ((millis() / 1000) - TofMillisAnt) >= PT)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    if (unity == "m") // Minutos
-    {
-        static bool Start;
-        static int TofMillimAnt = 0;
-
-        if (IN)
-        {
-            Start = false;
-            return true;
-        }
-
-        if (!IN && !Start)
-        {
-            Start = true;
-            TofMillimAnt = millis() / 60000;
-        }
-
-        if (Start && ((millis() / 60000) - TofMillimAnt) >= PT)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    if (unity == "h") // Horas
-    {
-        static bool Start;
-        static int TofMillihAnt = 0;
-
-        if (IN)
-        {
-            Start = false;
-            return true;
-        }
-
-        if (!IN && !Start)
-        {
-            Start = true;
-            TofMillihAnt = millis() / 36000000;
-        }
-
-        if (Start && ((millis() / 36000000) - TofMillihAnt) >= PT)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    
 
     return false;
 } // função TOF
 
-bool R_TRIG::r_trig(bool IN)
+/******************************************************************************
+return true only 1 scan when IN change from false to true
+*/
+bool standard::r_trig(bool IN)
 {
 
     static bool Start;
@@ -256,7 +108,11 @@ bool R_TRIG::r_trig(bool IN)
 
 } // r_trig
 
-bool F_TRIG::f_trig(bool IN)
+
+/******************************************************************************
+return true only 1 scan when IN change from true to false
+*/
+bool standard::f_trig(bool IN)
 {
 
     static bool Start;
@@ -281,18 +137,24 @@ bool F_TRIG::f_trig(bool IN)
 
 } // f_trig
 
-bool TP::tp(bool IN, unsigned long PT, String unity)
+/******************************************************************************
+IN          = when true, retrun true and start time
+PT          = Preset Time in milliseconds
+CV          = Current Value of time since IN=true
+Interval    = Comparative Value since IN=true
+
+if IN=true and CV=PT then return change to false
+*/
+bool standard::tp(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval)
 {
 
-    if (unity == "ms") // millisegundos
-    {
-
+  
         static bool Start;
-        static unsigned long TPMillimsAnt = 0;
+        CV = millis() - Interval;
 
         if (IN && !Start)
         {
-            TPMillimsAnt = millis();
+            Interval = millis();
             Start = true;
             return true;
         }
@@ -303,40 +165,8 @@ bool TP::tp(bool IN, unsigned long PT, String unity)
             return false;
         }
 
-        if (Start && (millis() - TPMillimsAnt) >= PT)
+        if (IN && (millis() - Interval) >= PT)
         {
-            // Serial.println("return true");
-            Start = false;
-            return false;
-        }
-        else
-        {
-            // Serial.println("return false");
-            return true;
-        }
-    }
-
-    if (unity == "s") // segundos
-    {
-        static bool Start;
-        static int TPMillisAnt = 0;
-
-        if (IN && !Start)
-        {
-            TPMillisAnt = millis() / 1000;
-            Start = true;
-            return true;
-        }
-
-        if (!IN)
-        {
-            Start = false;
-            return false;
-        }
-
-        if (Start && ((millis() / 1000) - TPMillisAnt) >= PT)
-        {
-
             Start = false;
             return false;
         }
@@ -344,67 +174,75 @@ bool TP::tp(bool IN, unsigned long PT, String unity)
         {
             return true;
         }
-    }
-
-    if (unity == "m") // minutos
-    {
-        static bool Start;
-        static int TPMillimAnt = 0;
-
-        if (IN && !Start)
-        {
-            TPMillimAnt = millis() / 60000;
-            Start = true;
-            return true;
-        }
-
-        if (!IN)
-        {
-            Start = false;
-            return false;
-        }
-
-        if (Start && ((millis() / 60000) - TPMillimAnt) >= PT)
-        {
-
-            Start = false;
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    if (unity == "h")
-    {
-        static bool Start;
-        static int TPMillihAnt = 0;
-
-        if (IN && !Start)
-        {
-            TPMillihAnt = millis() / 36000000;
-            Start = true;
-            return true;
-        }
-
-        if (!IN)
-        {
-            Start = false;
-            return false;
-        }
-
-        if (Start && ((millis() / 36000000) - TPMillihAnt) >= PT)
-        {
-
-            Start = false;
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
 
     return false;
 } // FUNÇÃO TP
+
+/******************************************************************************
+CU    = when true, increase CV
+RESET = make CV=0
+PV    = Preset Value
+CV    = Comparative Value with PV
+
+if CU=true then increase CV. if CV=PV then return true. if RESET=TRUE CV=0 and return=false
+*/
+bool standard::ctu(bool CU, bool RESET, int PV, int &CV){
+
+    static bool FS = false;
+
+    if (!FS) {
+        CV = 0;
+        FS = true;
+    }
+
+    if (CU) {
+        CV += 1;
+    }
+
+    if (RESET) {
+        CV = 0;
+    }
+
+    if (CV >= PV) {
+        return true;
+    }
+
+    return false;
+}   //FIM CTU
+
+
+/******************************************************************************
+CD    = when true, decrease CV
+RESET = make CV=PV
+PV    = Preset Value
+CV    = Comparative Value with 0
+
+if CD=true then decrease CV. if CV=0 then return true. if RESET=TRUE CV=PV and return=false
+*/
+bool standard::ctd(bool CD, bool RESET, int PV, int &CV){
+    
+    static bool FS = false;
+
+    if (!FS) {
+        CV = PV;
+        FS = true;
+    }
+
+    if (CD) {
+        CV -= 1;
+    }
+
+    if (RESET) {
+        CV = PV;
+    }
+
+    if (CV < 0) {
+        CV = 0;
+    }
+
+    if (CV == 0) {
+        return true;
+    }
+
+    return false;
+}   //FIM CTD

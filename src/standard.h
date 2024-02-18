@@ -1,37 +1,21 @@
 #ifndef standard_h
 #define standard_h
 #include <Arduino.h>
-
+/*
 class TON
 {
 private:
-    bool _IN;
-    unsigned long _PT;
-    String _unity;
-    static unsigned long _TonMillimsAnt;
-    
-    int _TonMillisAnt;
-    int _TonMillimAnt;
-    int _TonMillihAnt;
 
 public:
-    bool ton(bool IN, unsigned long PT, String unity = "ms");
+    bool ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &interval);
 };
 
 class TOF
 {
 private:
-    bool _IN;
-    unsigned long _PT;
-    String _unity;
-    static unsigned long _TofMillimsAnt;
-    
-    int _TofMillisAnt;
-    int _TofMillimAnt;
-    int _TofMillihAnt;
 
 public:
-    bool tof(bool IN, unsigned long PT, String unity = "ms");
+    bool tof(bool IN, unsigned long PT, unsigned long &CV, unsigned long &interval);
 };
 
 class R_TRIG
@@ -53,19 +37,46 @@ public:
 class TP
 {
 private:
-    bool _IN;
-    unsigned long _PT;
-    String _unity;
-    bool _Start;
-
-    unsigned long _TPMillimsAnt;
-    int _TPMillisAnt;
-    int _TPMillimAnt;
-    int _TPMillihAnt;
 
 public:
-    bool tp(bool IN, unsigned long PT, String unity = "ms");
+    bool tp(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval);
 };
 
+class CTU
+{
+private:
+    
+public:
+    bool ctu(bool CU, bool RESET, int PV, int &CV);
+};
+
+class CTD
+{
+private:
+    
+public:
+    bool ctd(bool CD, bool RESET, int PV, int &CV);
+};
+
+
+
+
+#endif
+*/
+
+
+class standard
+{
+private:
+
+public:
+    bool ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &interval);
+    bool tof(bool IN, unsigned long PT, unsigned long &CV, unsigned long &interval);
+    bool r_trig(bool IN);
+    bool f_trig(bool IN);
+    bool tp(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval);
+    bool ctu(bool CU, bool RESET, int PV, int &CV);
+    bool ctd(bool CD, bool RESET, int PV, int &CV);
+};
 
 #endif

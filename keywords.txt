@@ -7,3 +7,5 @@ tof     KEYWORD2
 r_trig  KEYWORD2
 f_trig  KEYWORD2
 TP      KEYWORD2
+ctu     KEYWORD2
+ctd     KEYWORD2
