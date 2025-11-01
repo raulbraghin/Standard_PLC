@@ -1,7 +1,7 @@
 #ifndef standard_h
 #define standard_h
-#include <Arduino.h>
-/*
+
+
 class TON
 {
 private:
@@ -60,11 +60,7 @@ public:
 
 
 
-
-#endif
-*/
-
-
+/*
 class standard
 {
 private:
@@ -78,5 +74,7 @@ public:
     bool ctu(bool CU, bool RESET, int PV, int &CV);
     bool ctd(bool CD, bool RESET, int PV, int &CV);
 };
+*/
+
 
 #endif

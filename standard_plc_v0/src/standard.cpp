@@ -1,5 +1,6 @@
-#include <Arduino.h>
 #include <standard.h>
+#include <time.h>
+
 
 /******************************************************************************
 IN          = when true, start time
@@ -9,7 +10,30 @@ Interval    = Comparative Value since IN=true
 
 if IN=true then the time start, when CV=PT then return is true
 */
-bool standard::ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval)
+typedef struct
+{
+    struct timespec start_time;
+    int Duration;
+    bool finish;
+} sTON;
+
+void timer_task(void *arg) {
+    sTON *timer = (sTON *)arg;
+    struct timespec current_time;
+
+    long StartTime = timer->start_time.tv_sec;
+
+    if (timer->finish) {
+        long elapsed_time = (current_time.tv_sec - StartTime) * 1000 + (current_time.tv_nsec / 1000000);
+
+        if (elapsed_time >= timer->Duration) {
+            timer->finish = false;
+
+        }
+    }
+}
+/*
+bool TON::ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &Interval)
 {
 
          static bool Start;
@@ -39,6 +63,7 @@ bool standard::ton(bool IN, unsigned long PT, unsigned long &CV, unsigned long &
 
     return false;
 } // FUNÇÃO TON
+*/
 
 /******************************************************************************
 IN          = when false, start time
