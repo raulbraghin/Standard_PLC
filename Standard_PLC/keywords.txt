@@ -1,0 +1,25 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TON_Block	KEYWORD1
+TOF_Block	KEYWORD1
+TP_Block	KEYWORD1
+CTU_Block	KEYWORD1
+CTD_Block	KEYWORD1
+CTUD_Block	KEYWORD1
+R_TRIG_Block	KEYWORD1
+F_TRIG_Block	KEYWORD1
+
+#######################################
+# Functions (KEYWORD2)
+#######################################
+
+processTON	KEYWORD2
+processTOF	KEYWORD2
+processTP	KEYWORD2
+processCTU	KEYWORD2
+processCTD	KEYWORD2
+processCTUD	KEYWORD2
+processR_TRIG	KEYWORD2
+processF_TRIG	KEYWORD2
