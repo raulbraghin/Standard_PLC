@@ -1,7 +1,3 @@
 # Ignorar o workspace do VS Code e a pasta de versões anteriores
-D:/GitHub/Standard_PLC/Standard_PLC.code-workspace
-D:/GitHub/Standard_PLC/VersõesAnteriores/
-
-# Alternativa relativa ao repositório
-Standard_PLC.code-workspace
+*.code-workspace
 VersõesAnteriores/
