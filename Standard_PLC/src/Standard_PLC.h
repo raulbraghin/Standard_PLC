@@ -19,7 +19,6 @@ typedef struct {
     uint32_t start_time;   // Internal time stamp used to start counting
 } TON_Block;
 
-
 /**
  * @brief Runs the TON (ON Delay) timer logic.
  * @param timer Pointer to the TON_Block instance.
