@@ -1,8 +1,8 @@
 # Standard_PLC
 
-Standard PLC function blocks (timers, counters and edge triggers) for Arduino.
+Standard PLC function blocks (timers, counters, bistables, edge triggers) and string functions for Arduino.
 
-Portable IEC 61131-3 style function blocks: `TON`, `TOF`, `TP` timers, `CTU`, `CTD`, `CTUD` counters and `R_TRIG`, `F_TRIG` edge detectors. Each block keeps its own state, so you can use as many instances as needed. Pass `millis()` as the current time.
+Portable IEC 61131-3 style function blocks: `TON`, `TOF`, `TP` timers, `CTU`, `CTD`, `CTUD` counters, `RS`, `SR` bistables, `R_TRIG`, `F_TRIG` edge detectors, and IEC string manipulation functions (`plc_concat`, `plc_find`, `plc_left`, `plc_right`, `plc_mid`, `plc_insert`, `plc_delete`, `plc_replace`, `plc_len`). Each block keeps its own state, so you can use as many instances as needed. Pass `millis()` as the current time.
 
 ## Installation
 
@@ -47,7 +47,9 @@ See `examples/` for full sketches:
 - `TimerOff` — TOF (OFF delay)
 - `TimerPulse` — TP (pulse)
 - `Counters` — CTU / CTD / CTUD
+- `Bistables` — RS (reset-dominant) / SR (set-dominant) bistable latches
 - `EdgeTriggers` — R_TRIG / F_TRIG
+- `StringFunctions` — Standard IEC 61131-3 string manipulation functions (LEN, LEFT, RIGHT, MID, CONCAT, INSERT, DELETE, REPLACE, FIND)
 - `MultipleTON` / `MultipleTONIndependent` — multiple independent instances
 
 ## API
@@ -78,6 +80,31 @@ Edge-triggered on rising edge of `CU` / `CD`.
 |-------|--------|----------|
 | R_TRIG (rising) | `R_TRIG_Block { Q, M }` | `processR_TRIG(&t, CLK)` |
 | F_TRIG (falling) | `F_TRIG_Block { Q, M }` | `processF_TRIG(&t, CLK)` |
+
+### Bistables (Latches / Flip-Flops)
+
+Bistable memory blocks conforming to IEC 61131-3 and CODESYS.
+
+| Block | Struct | Function |
+|-------|--------|----------|
+| RS (reset-dominant) | `RS_Block { Q1 }` | `processRS(&blk, SET, RESET1)` |
+| SR (set-dominant) | `SR_Block { Q1 }` | `processSR(&blk, SET1, RESET)` |
+
+### String Functions (IEC 61131-3 / CODESYS Standard.lib)
+
+Standard string manipulation functions with 1-based indexing conforming to CODESYS:
+
+| Function | C Buffer API (Zero Heap Allocation) | Arduino String API | Description |
+|----------|-------------------------------------|--------------------|-------------|
+| LEN | `plc_len(str)` | `plc_len(str)` | Character length of string |
+| LEFT | `plc_left(dst, sizeof(dst), str, size)` | `plc_left(str, size)` | Extract leftmost `size` characters |
+| RIGHT | `plc_right(dst, sizeof(dst), str, size)` | `plc_right(str, size)` | Extract rightmost `size` characters |
+| MID | `plc_mid(dst, sizeof(dst), str, len, pos)` | `plc_mid(str, len, pos)` | Extract `len` chars starting at 1-based `pos` |
+| CONCAT | `plc_concat(dst, sizeof(dst), str1, str2)` | `plc_concat(str1, str2)` | Concatenate `str1` and `str2` |
+| INSERT | `plc_insert(dst, sizeof(dst), str1, str2, pos)` | `plc_insert(str1, str2, pos)` | Insert `str2` at `pos` (`pos=0` before 1st char) |
+| DELETE | `plc_delete(dst, sizeof(dst), str, len, pos)` | `plc_delete(str, len, pos)` | Delete `len` characters at 1-based `pos` |
+| REPLACE | `plc_replace(dst, sizeof(dst), str1, str2, len, pos)` | `plc_replace(str1, str2, len, pos)` | Replace `len` chars at 1-based `pos` with `str2` |
+| FIND | `plc_find(str1, str2)` | `plc_find(str1, str2)` | Find 1-based position of `str2` in `str1` (0 if not found) |
 
 ## Requirements
 

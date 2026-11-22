@@ -10,6 +10,8 @@ CTD_Block	KEYWORD1
 CTUD_Block	KEYWORD1
 R_TRIG_Block	KEYWORD1
 F_TRIG_Block	KEYWORD1
+RS_Block	KEYWORD1
+SR_Block	KEYWORD1
 
 #######################################
 # Functions (KEYWORD2)
@@ -23,3 +25,14 @@ processCTD	KEYWORD2
 processCTUD	KEYWORD2
 processR_TRIG	KEYWORD2
 processF_TRIG	KEYWORD2
+processRS	KEYWORD2
+processSR	KEYWORD2
+plc_len	KEYWORD2
+plc_left	KEYWORD2
+plc_right	KEYWORD2
+plc_mid	KEYWORD2
+plc_concat	KEYWORD2
+plc_insert	KEYWORD2
+plc_delete	KEYWORD2
+plc_replace	KEYWORD2
+plc_find	KEYWORD2

@@ -1,6 +1,7 @@
 # Ignorar o workspace do VS Code e a pasta de versões anteriores
 *.code-workspace
 VersõesAnteriores/
+other_documents/
 *.pdf
 *.html
 *.md
